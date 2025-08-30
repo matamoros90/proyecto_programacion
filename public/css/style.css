@@ -1,8 +1,89 @@
-h1{
-    color: #d42626;
+/* ==== Fondo general con difuminado ==== */
+/* Fondo con imagen + difuminado */
+body{
+  margin:0; 
+  padding:0; 
+  min-height:100vh; 
+  color:#fff;
+  background: url('/css/img/fondoweb.jpg') no-repeat center center fixed; /* ← .jpg */
+  background-size: cover;
+  position: relative;
 }
-.products{
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
-    gap:0.5em;
+
+/* Capa oscura + difuminado */
+body::before{
+  content:"";
+  position:absolute; inset:0;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  background-color: rgba(152, 152, 152, 0.294);
+  z-index:0;
+}
+header, h1, .products{ position:relative; z-index:1; }
+
+/* ==== Encabezado y navegación ==== */
+header {
+  position: relative;
+  z-index: 1;
+  background: #ffffffac;
+  padding: 15px;
+  text-align: center;
+}
+/* ==== Color del texto del encabezado ==== */
+nav a { 
+  color: #000000;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #ffffff;
+}
+
+/* ==== Título principal ==== */
+h1 {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-top: 30px;
+  font-size: 2.5rem;
+  color: #000000; /* tu rojo */
+}
+
+/* ==== Sección de productos ==== */
+.products {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5em;
+  padding: 40px;
+}
+
+.products div {
+  background: rgba(255, 255, 255, 0.182); /* translúcido */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 20px;
+  color: #ffffff; /*texto dentro del recuadro*/
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.products div:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.products h2 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #000000;
+}
+
+.products p {
+  font-size: 0.9rem;
+  line-height: 1.4;
 }
