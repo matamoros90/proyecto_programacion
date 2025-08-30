@@ -68,7 +68,7 @@ h1 {
   -webkit-backdrop-filter: blur(8px);
   border-radius: 12px;
   padding: 20px;
-  color: #ffffff; /*texto dentro del recuadro*/
+  color: #970000; /*texto dentro del recuadro*/
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
