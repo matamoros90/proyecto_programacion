@@ -12,6 +12,7 @@
             <a href="/">Inicio</a>
             <a href="/productos">Productos</a>
             <a href="/usuarios">Usuario</a>
+            <a href="/carrito">Carrito</a>
         </nav>
     </header>
     <main>
@@ -24,8 +25,9 @@
                         <p><%=usuario.name.firstname%></p>
                         <p><%=usuario.name.lastname%></p>
                         <p><%=usuario.address.street%></p>
-                        <p><%=usuario.address.street%></p>
-
+                        <p><%=usuario.address.city%></p>
+                        <p><%=usuario.address.zipcode%></p>
+                        <p><%=usuario.phone%></p>
                     </article>
                 </div>
                 <%})%>

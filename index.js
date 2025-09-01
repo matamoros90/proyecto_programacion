@@ -11,5 +11,6 @@ const mainRouter = require('./src/routes/main.routes');
 app.use(mainRouter);
 app.use('/productos',require('./src/routes/productos.router'));
 app.use('/usuarios',require('./src/routes/usuarios.router'));
+app.use('/carrito',require('./src/routes/carrito.router'));
 const port = process.env.PORT || 3001;
 app.listen(port, () =>console.log(`http://localhost:${port}`));
