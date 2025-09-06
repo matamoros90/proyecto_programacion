@@ -1,89 +1,65 @@
-/* ==== Fondo general con difuminado ==== */
-/* Fondo con imagen + difuminado */
+/* ==== Fondo con imagen y blur SOLO detrás del contenido ==== */
 body{
-  margin:0; 
-  padding:0; 
-  min-height:100vh; 
-  color:#fff;
-  background: url('/css/img/fondoweb.jpg') no-repeat center center fixed; /* ← .jpg */
+  margin:0;
+  padding:0;
+  min-height:100vh;
+  color:#000; /* ajusta a gusto */
+  /* ruta correcta a tu imagen */
+  background: url('/css/img/fondoweb.jpg') no-repeat center center fixed;
   background-size: cover;
-  position: relative;
+
+  position: relative;         /* crea stacking context */
+  isolation: isolate;         /* evita que algo quede por detrás del body */
 }
 
-/* Capa oscura + difuminado */
+/* Capa que aplica el blur; SIEMPRE detrás del contenido */
 body::before{
   content:"";
-  position:absolute; inset:0;
+  position: fixed;            /* cubre toda la ventana */
+  inset:0;
+  z-index:-1;                 /* queda detrás gracias a isolation del body */
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  background-color: rgba(152, 152, 152, 0.294);
-  z-index:0;
+  background-color: rgba(115,115,115,0.30); /* leve oscurecido */
+  pointer-events:none;        /* no bloquea clics */
 }
-header, h1, .products{ position:relative; z-index:1; }
 
-/* ==== Encabezado y navegación ==== */
-header {
+/* Contenido por encima (sin blur) */
+header, main, footer, h1, .products, .contenedor{
   position: relative;
-  z-index: 1;
-  background: #ffffffac;
-  padding: 15px;
-  text-align: center;
-}
-/* ==== Color del texto del encabezado ==== */
-nav a { 
-  color: #000000;
-  margin: 0 15px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: color 0.3s ease;
+  z-index: 0;                 /* por encima del ::before */
 }
 
-nav a:hover {
-  color: #ffffff;
+/* ——— si tenías blur en tarjetas, QUÍTALO para que el texto no se suavice ——— */
+.products div,
+.contenedor{
+  background: rgba(136, 136, 136, 0.18); /* vidrio claro sin blur */
+  /* NO usar backdrop-filter aquí */
+  border-radius:12px;
+  padding:20px;
 }
 
-/* ==== Título principal ==== */
-h1 {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  margin-top: 30px;
-  font-size: 2.5rem;
-  color: #000000; /* tu rojo */
-}
+/* tu navegación / títulos como los tenías */
+header{ background:#ffffffac; padding:15px; text-align:center; }
+nav a{ color:#000; margin:0 15px; text-decoration:none; font-weight:bold; }
+nav a:hover{ color:#fff; }
+h1{ text-align:center; margin:30px 0; font-size:2.5rem; color:#000; }
+.products{ display:grid; grid-template-columns:repeat(3,1fr); gap:.5em; padding:40px; }
 
-/* ==== Sección de productos ==== */
-.products {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5em;
-  padding: 40px;
-}
-
-.products div {
-  background: rgba(255, 255, 255, 0.182); /* translúcido */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 12px;
+/* ==== Bloques con efecto glassmorphism ==== */
+.card {
+  background: rgba(255, 255, 255, 0.15);   /* Fondo translúcido */
+  backdrop-filter: blur(12px);             /* Efecto borroso */
+  -webkit-backdrop-filter: blur(12px);     /* Compatibilidad Safari */
+  border-radius: 15px;                     /* Bordes redondeados */
   padding: 20px;
-  color: #970000; /*texto dentro del recuadro*/
+  margin: 15px 0;
+  color: #000;                             /* Texto en negro */
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);  /* Sombras suaves */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.products div:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-}
-
-.products h2 {
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-  color: #000000;
-}
-
-.products p {
-  font-size: 0.9rem;
-  line-height: 1.4;
+.card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
 }
