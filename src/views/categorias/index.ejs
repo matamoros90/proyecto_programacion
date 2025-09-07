@@ -16,21 +16,25 @@
             <a href="/categorias">Categorías</a>
         </nav>
     </header>
-    <h1>Categorías</h1>
-    <a href="/categorias/create">Crear Nueva Categoría</a>
-    <table>
-        <thead>
-            <tr>
-                <th>Nombre</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% categorias.forEach(categoria => { %>
-                <tr>
-                    <td><a href="/categorias/<%= categoria.id %>"><%= categoria.nombre %></a></td>
-                </tr>
-            <% }) %>
-        </tbody>
-    </table>
+    <main>
+        <h1>Categorías</h1>
+            <div class="contenedor">
+                <a href="/categorias/create">Crear Nueva Categoría</a>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                        </tr>
+                    </thead>
+                        <tbody>
+                            <% categorias.forEach(categoria => { %>
+                                <tr>
+                                    <td><a href="/categorias/<%= categoria.id %>"><%= categoria.nombre %></a></td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                </table>
+            </div>
+    </main>
 </body>
 </html>
