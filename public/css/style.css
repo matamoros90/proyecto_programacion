@@ -30,7 +30,7 @@ header, main, footer, h1, .products, .contenedor{
   z-index: 0;                 /* por encima del ::before */
 }
 
-/* ——— si tenías blur en tarjetas, QUÍTALO para que el texto no se suavice ——— */
+/* ——— Blur o difuminado en tarjetas, puedes QUÍTALO para que el texto no se suavice ——— */
 .products div,
 .contenedor{
   background: rgba(255, 255, 255, 0.18); /* vidrio claro sin blur */
@@ -45,4 +45,3 @@ nav a{ color:#000000; margin:0 15px; text-decoration:none; font-weight:bold; }
 nav a:hover{ color:#ffffff; }
 h1{ text-align:center; margin:30px 0; font-size:2.5rem; color:#000000; }
 .products{ display:grid; grid-template-columns:repeat(3,1fr); gap:.5em; padding:40px; }
-

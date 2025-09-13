@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categorías</title>
+    <title>Inventario</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -18,9 +18,9 @@
         </nav>
     </header>
     <main>
-        <h1>Categorías</h1>
+        <h1>Inventario</h1>
             <div class="contenedor">
-                <a href="/categorias/create">Crear Nueva Categoría</a>
+                <a href="/inventario/create">Crear Nuevo Producto</a>
                 <table>
                     <thead>
                         <tr>
@@ -28,9 +28,9 @@
                         </tr>
                     </thead>
                         <tbody>
-                            <% Categorias.forEach(categoria => { %>
+                            <% inventario.forEach(producto => { %>
                                 <tr>
-                                    <td><a href="/categorias/<%= categoria.id %>"><%= categoria.nombre %></a></td>
+                                    <td><a href="/inventario/<%= producto.id %>"><%= producto.nombre %></a></td>
                                 </tr>
                             <% }) %>
                         </tbody>
