@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle de datos de Física</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <header>
+    <nav>
+      <a href="/">🏠 Inicio</a> 
+      <a href="/fisica/create">➕ Ingresar datos nuevos</a>
+      <a href="/fisica">📋 Ver datos</a>
+    </nav>
+  </header>
+
+  <h1>Detalle de datos de Física</h1>
+
+  <div class="container-center">
+    <section class="contenedor table-panel">
+      <% if (fisica) { %>
+        <p><strong>ID:</strong> <%= fisica.ID_FISICA %></p>
+        <p><strong>Voltaje:</strong> <%= fisica.voltaje %> V</p>
+        <p><strong>Temperatura:</strong> <%= fisica.temperatura %> °C</p>
+        <p><strong>Distancia:</strong> <%= fisica.distancia %> m</p>
+        <p><strong>Fecha de registro:</strong>
+          <% if (fisica.Fecha_Datos) { %>
+            <%= new Date(fisica.Fecha_Datos).toLocaleString('es-GT') %>
+          <% } else { %>
+            —
+          <% } %>
+        </p>
+
+        <div class="mt-24 center">
+          <a href="/fisica/<%= fisica.ID_FISICA %>/edit" class="btn btn-primary">✏️ Editar</a>
+          <a href="/fisica" class="btn btn-danger">⬅️ Regresar</a>
+        </div>
+      <% } else { %>
+        <p style="color:red; text-align:center;">No se encontró el registro solicitado.</p>
+        <div class="center mt-24">
+          <a href="/fisica" class="btn btn-danger">⬅️ Regresar</a>
+        </div>
+      <% } %>
+    </section>
+  </div>
+</body>
+</html>

@@ -8,7 +8,7 @@ body{
   background: url('/css/img/fondoweb.jpg') no-repeat center center fixed;
   background-size: cover;
 
-  position: relative;         /* crea stacking context */
+  position: relative;         /* para el ::before */
   isolation: isolate;         /* evita que algo quede por detrás del body */
 }
 
@@ -20,28 +20,114 @@ body::before{
   z-index:-1;                 /* queda detrás gracias a isolation del body */
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  background-color: rgba(115,115,115,0.30); /* leve oscurecido */
+  background-color: rgba(0, 170, 255, 0.195); /* leve oscurecido */
   pointer-events:none;        /* no bloquea clics */
 }
 
-/* Contenido por encima (sin blur) */
-header, main, footer, h1, .products, .contenedor{
-  position: relative;
-  z-index: 0;                 /* por encima del ::before */
+/* === Centrado suave del contenido bajo el título === */
+.container-center{
+  width: min(95%, 1100px);
+  margin: 0 auto;            /* centra horizontal */
+  text-align: center;
 }
 
-/* ——— Blur o difuminado en tarjetas, puedes QUÍTALO para que el texto no se suavice ——— */
-.products div,
-.contenedor{
-  background: rgba(255, 255, 255, 0.18); /* vidrio claro sin blur */
-  /* NO usar backdrop-filter aquí */
-  border-radius:12px;
-  padding:20px;
+/* === Panel para formularios (crear/editar) === */
+.form-panel{
+  width: min(92%, 900px);
+  margin: 16px auto 0;                 /* justo bajo el h1 */
+  padding: 18px 22px;
+  background: rgba(112,112,112,0.35);  /* más opaco que .contenedor, mismo tono */
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
+
+/* grid centrado: etiqueta | input */
+.form-panel form{
+  display: grid;
+  grid-template-columns: max-content 320px;
+  gap: 12px 18px;
+  justify-content: center;   /* centra todo el bloque */
+  align-items: center;
+  text-align: left;
+}
+.form-panel label{
+  font-weight: 700;
+  justify-self: end;
+}
+.form-panel input[type="text"],
+.form-panel input[type="number"],
+.form-panel input[type="date"],
+.form-panel input[type="datetime-local"]{
+  width: 100%;
+  max-width: 320px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.45);
+  background: rgba(255,255,255,0.92);   /* input claro sobre el glass */
+  text-align: center;
+  outline: none;
+}
+.form-panel button{
+  grid-column: 1 / -1;
+  justify-self: center;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 800;
+  background: #2157f3; color: #fff; cursor: pointer;
+}
+.form-panel button:hover{ filter: brightness(.92); }
+
+/* === Panel para la tabla (ver datos) === */
+.table-panel{
+  width: min(95%, 1000px);
+  margin: 16px auto 0;                 /* centrado bajo el h1 */
+  padding: 12px;
+  background: rgba(112,112,112,0.30);  /* coordina con tu fondo */
+  border: 1px solid rgba(255,255,255,0.30);
+  border-radius: 14px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 10px 30px rgba(0,0,0,.18);
+}
+
+/* tabla interna */
+.table-panel table{
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(112,112,112,0.22);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.table-panel th, .table-panel td{
+  padding: 12px 10px;
+  border: 1px solid rgba(255,255,255,0.25);
+  text-align: center;
+}
+.table-panel thead th{
+  background: rgba(0,0,0,0.12);
+  font-weight: 800;
+}
+.table-panel tbody tr:hover{
+  background: rgba(255,255,255,0.22);
+}
+
+/* Botones dentro de la tabla */
+.table-panel button{
+  background: rgba(255,255,255,0.75);
+  border: none;
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.table-panel button:hover{ filter: brightness(.92); }
 
 /* tu navegación / títulos como los tenías */
-header{ background:#6666662c; padding:15px; text-align:center; }
-nav a{ color:#000000; margin:0 15px; text-decoration:none; font-weight:bold; }
-nav a:hover{ color:#ffffff; }
-h1{ text-align:center; margin:30px 0; font-size:2.5rem; color:#000000; }
-.products{ display:grid; grid-template-columns:repeat(3,1fr); gap:.5em; padding:40px; }
+header{ background:#3e3e3e1e; padding:15px; text-align:center;} /*color del encabezado*/
+nav a{ color:#000000; margin:0 15px; text-decoration:none; font-weight:bold; } /*Color del texto*/
+nav a:hover{ color:#ffffff; } /*efecto al pasar el mouse*/
+h1{ text-align:center; margin:30px 0; font-size:2.5rem; color:#000000; } /*Color del título y alineación*/
+.products{ display:grid; grid-template-columns:repeat(3,1fr); gap:.5em; padding:40px; } /*Diseño de las tarjetas*/
