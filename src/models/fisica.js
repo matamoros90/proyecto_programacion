@@ -48,5 +48,4 @@ const destroy = async (id) => {
   const [result] = await pool.query(sql, [id]);
   return result;
 };
-
 module.exports = { store, findAll, findById, update, destroy };
