@@ -38,11 +38,14 @@ const index = async (req, res) => {
   }
 };
 
-// detalle
+// en src/controllers/fisica.controller.js
 const show = async (req, res) => {
   const { id } = req.params;
   try {
     const fisica = await model.findById(id);
+    if (!fisica) {
+      return res.status(404).render('fisica/show', { fisica: null, error: 'No se encontró el registro solicitado' });
+    }
     res.render('fisica/show', { fisica, error: null });
   } catch (e) {
     console.error('[show]', e);
@@ -91,3 +94,4 @@ const destroy = async (req, res) => {
 };
 
 module.exports = { create, store, index, show, edit, update, destroy };
+
