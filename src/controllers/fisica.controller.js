@@ -4,11 +4,9 @@ const model = require('../models/fisica');
 const index = async (req, res) => {
   try {
     const fisica = await model.findAll();
-    // ✅ SIEMPRE manda fisica
-    res.render('fisica/index', { fisica, error: null });
+    res.render('fisica/index', { fisica: fisica || [], error: null });
   } catch (error) {
     console.error('[index]', error);
-    // ✅ Incluso en error, manda un arreglo vacío
     res.status(500).render('fisica/index', { fisica: [], error: 'Error al obtener datos' });
   }
 };
@@ -40,3 +38,4 @@ module.exports = { index, show, edit /* …los demás */ };
     }
 };
 module.exports = { create, store, index, show, update, edit, destroy };
+
