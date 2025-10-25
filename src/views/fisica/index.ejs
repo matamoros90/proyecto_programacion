@@ -1,4 +1,13 @@
-<% const items = Array.isArray(fisica) ? fisica : []; %>
+<%
+// Normaliza los campos para que la vista SIEMPRE use id / fecha
+const items = (Array.isArray(fisica) ? fisica : []).map(r => ({
+  id:        r.id ?? r.id_fisica ?? r.ID_FISICA,
+  voltaje:   r.voltaje,
+  temperatura: r.temperatura,
+  distancia: r.distancia,
+  fecha:     r.fecha ?? r.fecha_datos ?? r.Fecha_Datos
+}));
+%>
 
 <h1>Datos Generales del Levitador</h1>
 
@@ -22,28 +31,32 @@
 
       <tbody>
         <% if (items.length > 0) { %>
-          <% items.forEach(f => { %>
+          <% items.forEach(r => { %>
             <tr>
-              <td><%= f.id_fisica %></td>
-              <td><%= f.voltaje %></td>
-              <td><%= f.temperatura %></td>
-              <td><%= f.distancia %></td>
+              <td><%= r.id %></td>
+              <td><%= r.voltaje %></td>
+              <td><%= r.temperatura %></td>
+              <td><%= r.distancia %></td>
               <td>
-                <% const raw = f.fecha_datos; const d = raw ? new Date(raw) : null; %>
+                <% const d = r.fecha ? new Date(typeof r.fecha === 'string' ? r.fecha.replace(' ','T') : r.fecha) : null; %>
                 <%= d ? d.toISOString().replace('T',' ').slice(0,16) : '—' %>
               </td>
 
               <td>
-                <a href="/fisica/<%= f.id_fisica %>">Ver</a>
-                <a href="/fisica/<%= f.id_fisica %>/edit">Editar</a>
-                <form action="/fisica/<%= f.id_fisica %>?_method=DELETE" method="POST" style="display:inline;">
+                <a href="/fisica/<%= r.id %>">Ver</a>
+                <a href="/fisica/<%= r.id %>/edit">Editar</a>
+                <form action="/fisica/<%= r.id %>?_method=DELETE" method="POST" style="display:inline;">
                   <button type="submit" onclick="return confirm('¿Seguro que desea eliminar?')">Eliminar</button>
                 </form>
               </td>
             </tr>
           <% }) %>
         <% } else { %>
-          <tr><td colspan="6" style="text-align:center">No hay registros aún. <a href="/fisica/create">Crea el primero</a>.</td></tr>
+          <tr>
+            <td colspan="6" style="text-align:center">
+              No hay registros aún. <a href="/fisica/create">Crea el primero</a>.
+            </td>
+          </tr>
         <% } %>
       </tbody>
     </table>
