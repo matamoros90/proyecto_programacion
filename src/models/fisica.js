@@ -1,46 +1,41 @@
-// src/models/fisica.js
 const db = require('./db');
 
-const store = async (voltaje, temperatura, distancia, fechaDatos) => {
-  const fecha = fechaDatos || new Date();
+async function store(voltaje, temperatura, distancia, fechaDatos) {
   const sql = `
-    INSERT INTO fisica (voltaje, temperatura, distancia, fecha_datos)
+    INSERT INTO fisica (voltaje, temperatura, distancia, "Fecha_Datos")
     VALUES ($1, $2, $3, $4)
-  `;
-  await db.query(sql, [voltaje, temperatura, distancia, fecha]);
-  return { ok: true };
-};
-
-const findAll = async () => {
-  const { rows } = await db.query(`
-    SELECT id_fisica, voltaje, temperatura, distancia, fecha_datos
-    FROM fisica
-    ORDER BY id_fisica ASC
-  `);
-  return rows;
-};
-
-const findById = async (id) => {
-  const { rows } = await db.query(`
-    SELECT id_fisica, voltaje, temperatura, distancia, fecha_datos
-    FROM fisica
-    WHERE id_fisica = $1
-  `, [id]);
+    RETURNING ID_FISICA AS id_fisica;`;
+  const params = [voltaje, temperatura, distancia, fechaDatos || new Date()];
+  const { rows } = await db.query(sql, params);
   return rows[0];
-};
+}
 
-const update = async (id, voltaje, temperatura, distancia) => {
-  await db.query(`
-    UPDATE fisica
-    SET voltaje = $1, temperatura = $2, distancia = $3
-    WHERE id_fisica = $4
-  `, [voltaje, temperatura, distancia, id]);
-  return { ok: true };
-};
+async function findAll() {
+  const sql = `
+    SELECT
+      ID_FISICA AS id_fisica,
+      VOLTAJE   AS voltaje,
+      TEMPERATURA AS temperatura,
+      DISTANCIA AS distancia,
+      "Fecha_Datos"
+    FROM fisica
+    ORDER BY ID_FISICA ASC`;
+  const { rows } = await db.query(sql);
+  return rows;
+}
 
-const destroy = async (id) => {
-  await db.query(`DELETE FROM fisica WHERE id_fisica = $1`, [id]);
-  return { ok: true };
-};
+async function findById(id) {
+  const sql = `
+    SELECT
+      ID_FISICA AS id_fisica,
+      VOLTAJE   AS voltaje,
+      TEMPERATURA AS temperatura,
+      DISTANCIA AS distancia,
+      "Fecha_Datos"
+    FROM fisica
+    WHERE ID_FISICA = $1`;
+  const { rows } = await db.query(sql, [id]);
+  return rows[0];
+}
 
-module.exports = { store, findAll, findById, update, destroy };
+module.exports = { store, findAll, findById };
