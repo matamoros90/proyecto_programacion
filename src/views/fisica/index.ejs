@@ -46,10 +46,9 @@
                   %>
                   <%= d ? d.toISOString().replace('T',' ').slice(0,16) : '—' %>
                 </td>
-                <td><a href="/fisica/<%= f.ID_FISICA %>">Ver</a></td>
-                <td><a href="/fisica/<%= f.ID_FISICA %>/edit">Editar</a></td>
-                <td>
-                  <form action="/fisica/<%= f.ID_FISICA %>?_method=DELETE" method="POST" style="display:inline;">
+                <a href="/fisica/<%= r.id_fisica %>">Ver</a>
+                <a href="/fisica/<%= r.id_fisica %>/edit">Editar</a>
+                <form action="/fisica/<%= r.id_fisica %>?_method=DELETE" method="POST"> … </form>
                     <button type="submit" onclick="return confirm('¿Seguro que desea eliminar?')">Eliminar</button>
                   </form>
                 </td>
