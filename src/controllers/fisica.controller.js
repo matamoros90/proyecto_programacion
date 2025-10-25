@@ -1,24 +1,15 @@
-// src/controllers/fisica.controller.js
 const model = require('../models/fisica');
 
-// formulario de creación
-const create = (req, res) => {
-  res.render('fisica/create', { mensaje: '' });
-};
-
-// guardar
 const store = async (req, res) => {
   const { voltaje, temperatura, distancia, fecha } = req.body;
-  const v = parseFloat(voltaje);
-  const t = parseFloat(temperatura);
-  const d = parseFloat(distancia);
+  const v = Number(voltaje);
+  const t = Number(temperatura);
+  const d = Number(distancia);
   const fechaDatos = fecha ? new Date(fecha) : new Date();
 
   try {
     await model.store(v, t, d, fechaDatos);
-    // Si prefieres mostrar mensaje en el formulario:
-    // return res.render('fisica/create', { mensaje: 'Datos agregados correctamente' });
-    return res.redirect('/fisica');
+    return res.redirect('/fisica');   // ← así verás de inmediato el registro
   } catch (error) {
     console.error('[store]', error);
     return res.status(500).render('fisica/create', { mensaje: 'Error al agregar datos' });
@@ -102,5 +93,6 @@ const destroy = async (req, res) => {
 };
 
 module.exports = { create, store, index, show, edit, update, destroy };
+
 
 
