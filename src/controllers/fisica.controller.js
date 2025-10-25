@@ -1,18 +1,29 @@
+// src/controllers/fisica.controller.js
 const model = require('../models/fisica');
 
-const store = async (req, res) => {
-  const { voltaje, temperatura, distancia, fecha } = req.body;
-  const v = Number(voltaje);
-  const t = Number(temperatura);
-  const d = Number(distancia);
-  const fechaDatos = fecha ? new Date(fecha) : new Date();
+// formulario de creación
+const create = (req, res) => {
+  res.render('fisica/create', { mensaje: '', error: null });
+};
 
+// guardar
+const store = async (req, res) => {
   try {
+    const { voltaje, temperatura, distancia, fecha } = req.body;
+    const v = parseFloat(voltaje);
+    const t = parseFloat(temperatura);
+    const d = parseFloat(distancia);
+    const fechaDatos = fecha ? new Date(fecha) : new Date();
+
     await model.store(v, t, d, fechaDatos);
-    return res.redirect('/fisica');   // ← así verás de inmediato el registro
-  } catch (error) {
-    console.error('[store]', error);
-    return res.status(500).render('fisica/create', { mensaje: 'Error al agregar datos' });
+
+    // vuelve al listado
+    return res.redirect('/fisica');
+    // si prefieres, podrías renderizar de nuevo el form:
+    // return res.render('fisica/create', { mensaje: 'Datos agregados correctamente', error: null });
+  } catch (e) {
+    console.error('[store]', e);
+    return res.status(500).render('fisica/create', { mensaje: '', error: 'Error al agregar datos' });
   }
 };
 
@@ -20,46 +31,34 @@ const store = async (req, res) => {
 const index = async (req, res) => {
   try {
     const fisica = await model.findAll();
-    return res.render('fisica/index', { fisica: fisica || [], error: null });
-  } catch (error) {
-    console.error('[index]', error);
-    return res.status(500).render('fisica/index', { fisica: [], error: 'Error al obtener datos' });
+    res.render('fisica/index', { fisica: Array.isArray(fisica) ? fisica : [], error: null });
+  } catch (e) {
+    console.error('[index]', e);
+    res.status(500).render('fisica/index', { fisica: [], error: 'Error al obtener datos' });
   }
 };
 
-// detalle (defensivo)
+// detalle
 const show = async (req, res) => {
   const { id } = req.params;
-  if (!id || isNaN(Number(id))) {
-    return res.status(400).render('fisica/show', { fisica: null, error: 'ID inválido' });
-  }
   try {
     const fisica = await model.findById(id);
-    if (!fisica) {
-      return res.status(404).render('fisica/show', { fisica: null, error: 'Registro no encontrado' });
-    }
-    return res.render('fisica/show', { fisica, error: null });
+    res.render('fisica/show', { fisica, error: null });
   } catch (e) {
     console.error('[show]', e);
-    return res.status(500).render('fisica/show', { fisica: null, error: 'Error al obtener datos' });
+    res.status(500).render('fisica/show', { fisica: null, error: 'Error al obtener datos' });
   }
 };
 
-// edición (defensivo)
+// formulario de edición
 const edit = async (req, res) => {
   const { id } = req.params;
-  if (!id || isNaN(Number(id))) {
-    return res.status(400).render('fisica/edit', { fisica: null, error: 'ID inválido' });
-  }
   try {
-    const fis = await model.findById(id);
-    if (!fis) {
-      return res.status(404).render('fisica/edit', { fisica: null, error: 'Registro no encontrado' });
-    }
-    return res.render('fisica/edit', { fisica: fis, error: null });
+    const fisica = await model.findById(id);
+    res.render('fisica/edit', { fisica, error: null });
   } catch (e) {
     console.error('[edit]', e);
-    return res.status(500).render('fisica/edit', { fisica: null, error: 'Error al obtener datos' });
+    res.status(500).render('fisica/edit', { fisica: null, error: 'Error al obtener datos' });
   }
 };
 
@@ -67,16 +66,15 @@ const edit = async (req, res) => {
 const update = async (req, res) => {
   const { id } = req.params;
   const { voltaje, temperatura, distancia } = req.body;
-  const v = parseFloat(voltaje);
-  const t = parseFloat(temperatura);
-  const d = parseFloat(distancia);
-
   try {
-    await model.update(id, v, t, d);
-    return res.redirect('/fisica');
-  } catch (error) {
-    console.error('[update]', error);
-    return res.status(500).render('fisica/edit', { fisica: null, error: 'Error al actualizar datos' });
+    await model.update(id, parseFloat(voltaje), parseFloat(temperatura), parseFloat(distancia));
+    res.redirect('/fisica');
+  } catch (e) {
+    console.error('[update]', e);
+    res.status(500).render('fisica/edit', {
+      fisica: { ID_FISICA: id, voltaje, temperatura, distancia },
+      error: 'Error al actualizar datos'
+    });
   }
 };
 
@@ -85,14 +83,11 @@ const destroy = async (req, res) => {
   const { id } = req.params;
   try {
     await model.destroy(id);
-    return res.redirect('/fisica');
-  } catch (error) {
-    console.error('[destroy]', error);
-    return res.status(500).render('fisica/index', { fisica: [], error: 'Error al eliminar datos' });
+    res.redirect('/fisica');
+  } catch (e) {
+    console.error('[destroy]', e);
+    res.status(500).render('fisica/index', { fisica: [], error: 'Error al eliminar datos' });
   }
 };
 
 module.exports = { create, store, index, show, edit, update, destroy };
-
-
-
