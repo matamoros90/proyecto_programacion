@@ -21,7 +21,7 @@
   <% if (fisica) { %>
     <div class="container-center">
       <section class="contenedor form-panel">
-        <form action="/fisica/<%= fisica.ID_FISICA %>?_method=PUT" method="POST">
+        <form action="/fisica/<%= fisica.id_fisica %>?_method=PUT" method="POST">
           
           <label for="voltaje">Voltaje (V)</label>
           <input type="text" id="voltaje" name="voltaje" value="<%= fisica.voltaje %>" required>
@@ -48,4 +48,5 @@
   <% } %>
 
 </body>
+
 </html>
