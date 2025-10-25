@@ -11,14 +11,22 @@
 
   <header>
     <nav>
-      <a href="/">🏠 Inicio</a> 
+      <a href="/">🏠 Inicio</a>
       <a href="/fisica/create">➕ Ingresar datos nuevos</a>
     </nav>
   </header>
 
+  <% const items = Array.isArray(fisica) ? fisica : []; %>
+
   <h1>Datos Generales del Levitador</h1>
 
-  <% if (Array.isArray(fisica) && fisica.length > 0) { %>
+  <% if (typeof error !== 'undefined' && error) { %>
+    <div class="container-center">
+      <p style="color:red"><%= error %></p>
+    </div>
+  <% } %>
+
+  <% if (items.length > 0) { %>
     <div class="container-center">
       <section class="contenedor table-panel">
         <table>
@@ -33,22 +41,28 @@
             </tr>
           </thead>
           <tbody>
-            <% fisica.forEach(f => { %>
+            <% items.forEach(f => { %>
               <tr>
-                <td><%= f.id_fisica %></td>
+                <!-- Ajusta ID_FISICA si tu consulta devuelve otro nombre -->
+                <td><%= f.ID_FISICA %></td>
                 <td><%= f.voltaje %></td>
                 <td><%= f.temperatura %></td>
                 <td><%= f.distancia %></td>
                 <td>
-                  <% 
+                  <%
                     const raw = f.Fecha_Datos;
                     const d = raw ? new Date(typeof raw === 'string' ? raw.replace(' ','T') : raw) : null;
                   %>
                   <%= d ? d.toISOString().replace('T',' ').slice(0,16) : '—' %>
                 </td>
-                <a href="/fisica/<%= r.id_fisica %>">Ver</a>
-                <a href="/fisica/<%= r.id_fisica %>/edit">Editar</a>
-                <form action="/fisica/<%= r.id_fisica %>?_method=DELETE" method="POST"> … </form>
+                <td>
+                  <a href="/fisica/<%= f.ID_FISICA %>">Ver</a>
+                </td>
+                <td>
+                  <a href="/fisica/<%= f.ID_FISICA %>/edit">Editar</a>
+                </td>
+                <td>
+                  <form action="/fisica/<%= f.ID_FISICA %>?_method=DELETE" method="POST" style="display:inline">
                     <button type="submit" onclick="return confirm('¿Seguro que desea eliminar?')">Eliminar</button>
                   </form>
                 </td>
