@@ -1,41 +1,56 @@
+// src/models/fisica.js
 const db = require('./db');
 
-async function store(voltaje, temperatura, distancia, fechaDatos) {
+const store = async (voltaje, temperatura, distancia, fechaDatos) => {
   const sql = `
     INSERT INTO fisica (voltaje, temperatura, distancia, "Fecha_Datos")
     VALUES ($1, $2, $3, $4)
-    RETURNING ID_FISICA AS id_fisica;`;
+    RETURNING id_fisica;`;
   const params = [voltaje, temperatura, distancia, fechaDatos || new Date()];
-  const { rows } = await db.query(sql, params);
-  return rows[0];
-}
+  await db.query(sql, params);
+  return { ok: true };
+};
 
-async function findAll() {
-  const sql = `
+const findAll = async () => {
+  const { rows } = await db.query(`
     SELECT
-      ID_FISICA AS id_fisica,
-      VOLTAJE   AS voltaje,
-      TEMPERATURA AS temperatura,
-      DISTANCIA AS distancia,
-      "Fecha_Datos"
+      id_fisica,
+      voltaje,
+      temperatura,
+      distancia,
+      "Fecha_Datos" AS fecha_datos
     FROM fisica
-    ORDER BY ID_FISICA ASC`;
-  const { rows } = await db.query(sql);
+    ORDER BY id_fisica ASC
+  `);
   return rows;
-}
+};
 
-async function findById(id) {
-  const sql = `
+const findById = async (id) => {
+  const { rows } = await db.query(`
     SELECT
-      ID_FISICA AS id_fisica,
-      VOLTAJE   AS voltaje,
-      TEMPERATURA AS temperatura,
-      DISTANCIA AS distancia,
-      "Fecha_Datos"
+      id_fisica,
+      voltaje,
+      temperatura,
+      distancia,
+      "Fecha_Datos" AS fecha_datos
     FROM fisica
-    WHERE ID_FISICA = $1`;
-  const { rows } = await db.query(sql, [id]);
+    WHERE id_fisica = $1
+  `, [id]);
   return rows[0];
-}
+};
 
-module.exports = { store, findAll, findById };
+const update = async (id, voltaje, temperatura, distancia) => {
+  await db.query(`
+    UPDATE fisica
+    SET voltaje = $1, temperatura = $2, distancia = $3
+    WHERE id_fisica = $4
+  `, [voltaje, temperatura, distancia, id]);
+  return { ok: true };
+};
+
+const destroy = async (id) => {
+  await db.query(`DELETE FROM fisica WHERE id_fisica = $1`, [id]);
+  return { ok: true };
+};
+
+module.exports = { store, findAll, findById, update, destroy };
